@@ -1,10 +1,44 @@
-
 #ifndef dataStructures_h
 #define dataStructures_h
 
-#include <vector>
+#include <deque>
 #include <map>
 #include <opencv2/core.hpp>
+#include <vector>
+
+
+template <class T, std::size_t capacity>
+class Ringbuffer {
+    std::deque<T> buffer;
+
+   public:
+    void push_back(const T& data) {
+        buffer.push_back(data);
+        if (buffer.size() > capacity) {
+            buffer.pop_front();
+        }
+    }
+
+    bool empty() const {
+        return buffer.empty();
+    }
+
+    std::size_t size() const {
+        return buffer.size();
+    }
+
+    typename std::deque<T>::iterator begin() {
+        return buffer.begin();
+    }
+
+    typename std::deque<T>::iterator end() {
+        return buffer.end();
+    }
+
+    T& back() {
+        return buffer.back();
+    }
+};
 
 struct LidarPoint { // single lidar point in space
     double x,y,z,r; // x,y,z in [m], r is point reflectivity
